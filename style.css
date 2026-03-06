@@ -69,3 +69,16 @@ button:hover {
     background: #00cc6a;
     box-shadow: 0 0 15px #00ff88;
 }
+
+@media (max-width: 480px) {
+    .glass-card { width: 90%; padding: 20px; }
+    #mascot-img { width: 120px; height: 120px; }
+}
+
+.glass-card {
+    animation: fadeIn 1s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
