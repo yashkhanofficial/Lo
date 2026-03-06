@@ -88,3 +88,30 @@ button:hover {
     .glass-card { width: 90%; padding: 20px; }
     #mascot-img { width: 120px; height: 120px; }
 }
+
+/* গ্লাস-কার্ডের সাইজ ঠিক করা */
+.glass-card { 
+    background: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(20px); 
+    padding: 40px; 
+    border-radius: 30px; 
+    text-align: center; 
+    width: 350px; 
+    max-width: 90%; /* মোবাইলে যাতে স্ক্রিন থেকে বড় না হয় */
+    border: 1px solid rgba(0, 255, 136, 0.3); 
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* মোবাইল ভার্সন ফিক্স */
+@media (max-width: 480px) {
+    .glass-card { 
+        width: 85%; 
+        padding: 25px; 
+        margin: 10px;
+    }
+    #mascot-img { 
+        width: 130px; 
+        height: 130px; 
+    }
+}
