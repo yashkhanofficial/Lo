@@ -1,4 +1,4 @@
-/* পুরো পেজের ডিজাইন */
+/* ১. মূল পেজ সেটআপ */
 body { 
     margin: 0; 
     background: #000; 
@@ -7,11 +7,11 @@ body {
     display: flex; 
     justify-content: center; 
     align-items: center; 
-    height: 100vh; 
-    overflow: hidden; 
+    min-height: 100vh; 
+    overflow-x: hidden;
 }
 
-/* গ্লাস-মোরফিজম কার্ড এবং অ্যানিমেশন */
+/* ২. গ্লাস কার্ড - রেসপন্সিভ সাইজ */
 .glass-card { 
     background: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(20px); 
@@ -19,30 +19,28 @@ body {
     border-radius: 30px; 
     text-align: center; 
     width: 350px; 
+    max-width: 90%; 
     border: 1px solid rgba(0, 255, 136, 0.3); 
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
-    animation: fadeIn 1s ease-in-out;
+    box-sizing: border-box;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* কার্টুন ইমেজ */
+/* ৩. কার্টুন ইমেজ */
 #mascot-img { 
-    width: 180px; 
-    height: 180px; 
+    width: 150px; 
+    height: 150px; 
     margin-bottom: 20px; 
     transition: 0.3s; 
-    border-radius: 50%;
+    border-radius: 50%; 
+    object-fit: cover;
 }
 
-/* ইনপুট ফিল্ড ডিজাইন */
+/* ৪. ইনপুট ফিল্ড এবং কন্টেইনার */
+.input-group { position: relative; margin: 15px 0; width: 100%; }
+
 input { 
     width: 100%; 
     padding: 12px; 
-    margin: 10px 0; 
     background: rgba(0,0,0,0.3); 
     border: 1px solid #444; 
     color: white; 
@@ -51,17 +49,25 @@ input {
     box-sizing: border-box; 
 }
 
-/* ফোকাস করলে সবুজ গ্লো */
-input:focus {
-    border: 1px solid #00ff88;
-    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+input:focus { border: 1px solid #00ff88; }
+
+/* ৫. পাসওয়ার্ড টগল বাটন */
+#toggle-pass { 
+    position: absolute; 
+    right: 10px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    background: none; 
+    border: none; 
+    color: #00ff88; 
+    cursor: pointer; 
+    font-size: 16px;
 }
 
-/* বাটন ডিজাইন */
-button { 
+/* ৬. বাটন ডিজাইন */
+button#login-btn { 
     width: 100%; 
     padding: 15px; 
-    margin-top: 10px; 
     background: #00ff88; 
     border: none; 
     border-radius: 10px; 
@@ -71,47 +77,19 @@ button {
     transition: 0.3s;
 }
 
-button:hover {
-    background: #00cc6a;
-    box-shadow: 0 0 15px #00ff88;
+button#login-btn:hover { background: #00cc6a; }
+
+/* ৭. অ্যাকাউন্ট ক্রিয়েট লিঙ্ক */
+a { 
+    color: #00ff88; 
+    text-decoration: none; 
+    font-size: 14px; 
+    display: block; 
+    margin-top: 20px; 
 }
 
-/* পাসওয়ার্ড টগল বাটন পজিশন */
-.pass-container { position: relative; display: flex; align-items: center; }
-#toggle-pass { 
-    position: absolute; right: 10px; background: transparent; border: none; 
-    color: #00ff88; cursor: pointer; font-size: 18px; 
-}
-
-/* মোবাইল রেসপন্সিভনেস */
+/* ৮. মোবাইল ভার্সন রেসপন্সিভনেস */
 @media (max-width: 480px) {
-    .glass-card { width: 90%; padding: 20px; }
+    .glass-card { padding: 25px; }
     #mascot-img { width: 120px; height: 120px; }
-}
-
-/* গ্লাস-কার্ডের সাইজ ঠিক করা */
-.glass-card { 
-    background: rgba(255, 255, 255, 0.05); 
-    backdrop-filter: blur(20px); 
-    padding: 40px; 
-    border-radius: 30px; 
-    text-align: center; 
-    width: 350px; 
-    max-width: 90%; /* মোবাইলে যাতে স্ক্রিন থেকে বড় না হয় */
-    border: 1px solid rgba(0, 255, 136, 0.3); 
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
-    animation: fadeIn 1s ease-in-out;
-}
-
-/* মোবাইল ভার্সন ফিক্স */
-@media (max-width: 480px) {
-    .glass-card { 
-        width: 85%; 
-        padding: 25px; 
-        margin: 10px;
-    }
-    #mascot-img { 
-        width: 130px; 
-        height: 130px; 
-    }
 }
