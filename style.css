@@ -11,7 +11,7 @@ body {
     overflow: hidden; 
 }
 
-/* গ্লাস-মোরফিজম কার্ড */
+/* গ্লাস-মোরফিজম কার্ড এবং অ্যানিমেশন */
 .glass-card { 
     background: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(20px); 
@@ -21,6 +21,12 @@ body {
     width: 350px; 
     border: 1px solid rgba(0, 255, 136, 0.3); 
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* কার্টুন ইমেজ */
@@ -42,7 +48,7 @@ input {
     color: white; 
     border-radius: 10px; 
     outline: none; 
-    box-sizing: border-box; /* এটি ইনপুটকে ভেঙে যাওয়া থেকে বাঁচাবে */
+    box-sizing: border-box; 
 }
 
 /* ফোকাস করলে সবুজ গ্লো */
@@ -70,15 +76,15 @@ button:hover {
     box-shadow: 0 0 15px #00ff88;
 }
 
+/* পাসওয়ার্ড টগল বাটন পজিশন */
+.pass-container { position: relative; display: flex; align-items: center; }
+#toggle-pass { 
+    position: absolute; right: 10px; background: transparent; border: none; 
+    color: #00ff88; cursor: pointer; font-size: 18px; 
+}
+
+/* মোবাইল রেসপন্সিভনেস */
 @media (max-width: 480px) {
     .glass-card { width: 90%; padding: 20px; }
     #mascot-img { width: 120px; height: 120px; }
-}
-
-.glass-card {
-    animation: fadeIn 1s ease-in-out;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
 }
