@@ -11,7 +11,7 @@ body {
     overflow-x: hidden;
 }
 
-/* ২. গ্লাস কার্ড - রেসপন্সিভ সাইজ */
+/* ২. গ্লাস কার্ড - রেসপন্সিভ ও গ্লো ইফেক্ট */
 .glass-card { 
     background: rgba(255, 255, 255, 0.05); 
     backdrop-filter: blur(20px); 
@@ -23,6 +23,7 @@ body {
     border: 1px solid rgba(0, 255, 136, 0.3); 
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
     box-sizing: border-box;
+    transition: 0.5s;
 }
 
 /* ৩. কার্টুন ইমেজ */
@@ -33,6 +34,7 @@ body {
     transition: 0.3s; 
     border-radius: 50%; 
     object-fit: cover;
+    border: 2px solid #00ff88;
 }
 
 /* ৪. ইনপুট ফিল্ড এবং কন্টেইনার */
@@ -49,12 +51,12 @@ input {
     box-sizing: border-box; 
 }
 
-input:focus { border: 1px solid #00ff88; }
+input:focus { border: 1px solid #00ff88; box-shadow: 0 0 8px rgba(0, 255, 136, 0.3); }
 
 /* ৫. পাসওয়ার্ড টগল বাটন */
 #toggle-pass { 
     position: absolute; 
-    right: 10px; 
+    right: 12px; 
     top: 50%; 
     transform: translateY(-50%);
     background: none; 
@@ -64,8 +66,8 @@ input:focus { border: 1px solid #00ff88; }
     font-size: 16px;
 }
 
-/* ৬. বাটন ডিজাইন */
-button#login-btn { 
+/* ৬. মেইন বাটন ডিজাইন (Login/Register) */
+button#action-btn { 
     width: 100%; 
     padding: 15px; 
     background: #00ff88; 
@@ -75,18 +77,23 @@ button#login-btn {
     cursor: pointer; 
     color: #000;
     transition: 0.3s;
+    margin-top: 10px;
 }
 
-button#login-btn:hover { background: #00cc6a; }
+button#action-btn:hover { background: #00cc6a; box-shadow: 0 0 15px #00ff88; }
 
-/* ৭. অ্যাকাউন্ট ক্রিয়েট লিঙ্ক */
-a { 
+/* ৭. সুইচ ফর্ম লিঙ্ক */
+a#toggle-link { 
     color: #00ff88; 
     text-decoration: none; 
     font-size: 14px; 
     display: block; 
     margin-top: 20px; 
+    cursor: pointer;
+    transition: 0.3s;
 }
+
+a#toggle-link:hover { color: #fff; text-decoration: underline; }
 
 /* ৮. মোবাইল ভার্সন রেসপন্সিভনেস */
 @media (max-width: 480px) {
