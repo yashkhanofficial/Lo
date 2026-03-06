@@ -8,22 +8,21 @@ body {
     justify-content: center; 
     align-items: center; 
     min-height: 100vh; 
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
-/* ২. গ্লাস কার্ড - রেসপন্সিভ ও নিয়ন গ্লো অ্যানিমেশন */
+/* ২. গ্লাস কার্ড - রেসপন্সিভ ও গ্লো ইফেক্ট */
 .glass-card { 
     background: rgba(0, 0, 0, 0.7); 
-    backdrop-filter: blur(20px); 
-    padding: 40px; 
-    border-radius: 30px; 
+    backdrop-filter: blur(15px); 
+    padding: 30px; 
+    border-radius: 25px; 
     text-align: center; 
-    width: 350px; 
-    max-width: 90%; 
+    width: 320px; 
+    max-width: 85%; 
     border: 2px solid transparent;
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
-    box-sizing: border-box;
     animation: borderGlow 3s infinite alternate;
+    box-sizing: border-box;
 }
 
 @keyframes borderGlow {
@@ -33,77 +32,76 @@ body {
 
 /* ৩. কার্টুন ইমেজ */
 #mascot-img { 
-    width: 150px; 
-    height: 150px; 
-    margin-bottom: 20px; 
-    transition: 0.3s; 
+    width: 120px; 
+    height: 120px; 
+    margin-bottom: 15px; 
     border-radius: 50%; 
     object-fit: cover;
-    border: 3px solid #00ff88;
+    border: 2px solid #00ff88;
 }
 
-/* ৪. ইনপুট ফিল্ড এবং কন্টেইনার */
-.input-group { position: relative; margin: 15px 0; width: 100%; }
+/* ৪. ইনপুট গ্রুপ ফিক্স */
+.input-group { 
+    position: relative; 
+    margin: 15px 0; 
+    display: flex; 
+    align-items: center; 
+    width: 100%; 
+}
 
+/* ইনপুট ফিল্ড প্যাডিং ফিক্স যাতে আইকন না ঢাকে */
 input { 
     width: 100%; 
-    padding: 14px; 
-    background: rgba(255,255,255,0.05); 
+    padding: 12px 45px 12px 12px; 
+    background: rgba(255,255,255,0.1); 
     border: 1px solid #444; 
     color: white; 
-    border-radius: 12px; 
+    border-radius: 10px; 
     outline: none; 
     box-sizing: border-box; 
-    font-size: 16px;
 }
 
-input:focus { border: 1px solid #00ff88; box-shadow: 0 0 8px rgba(0, 255, 136, 0.3); }
+input:focus { border: 1px solid #00ff88; }
 
-/* ৫. পাসওয়ার্ড টগল বাটন */
+/* ৫. পাসওয়ার্ড টগল আইকন ফিক্স (নিচে নামা বন্ধ) */
 #toggle-pass { 
     position: absolute; 
-    right: 12px; 
-    top: 50%; 
-    transform: translateY(-50%);
+    right: 5px; 
+    height: 100%; 
+    display: flex; 
+    align-items: center; 
     background: none; 
     border: none; 
     color: #00ff88; 
     cursor: pointer; 
-    font-size: 20px;
+    font-size: 18px; 
+    padding: 0 10px;
 }
 
-/* ৬. মেইন বাটন ডিজাইন */
-button#action-btn { 
+/* ৬. বাটন ডিজাইন */
+button { 
     width: 100%; 
-    padding: 15px; 
+    padding: 12px; 
     background: #00ff88; 
     border: none; 
-    border-radius: 12px; 
+    border-radius: 10px; 
     font-weight: bold; 
     cursor: pointer; 
-    color: #000;
-    transition: 0.3s;
-    margin-top: 10px;
-    font-size: 16px;
+    color: #000; 
+    margin-top: 5px; 
 }
 
-button#action-btn:hover { background: #00cc6a; box-shadow: 0 0 15px #00ff88; }
-
-/* ৭. সুইচ ফর্ম লিঙ্ক */
-a#toggle-link { 
+/* ৭. লিঙ্ক ডিজাইন */
+a { 
     color: #00ff88; 
     text-decoration: none; 
     font-size: 14px; 
     display: block; 
-    margin-top: 20px; 
-    cursor: pointer;
-    transition: 0.3s;
+    margin-top: 15px; 
+    cursor: pointer; 
 }
 
-a#toggle-link:hover { color: #fff; text-decoration: underline; }
-
-/* ৮. মোবাইল ভার্সন রেসপন্সিভনেস */
+/* ৮. মোবাইলের জন্য ছোট স্ক্রিন ফিক্স */
 @media (max-width: 480px) {
-    .glass-card { padding: 25px; }
-    #mascot-img { width: 120px; height: 120px; }
+    .glass-card { padding: 20px; width: 90%; }
 }
