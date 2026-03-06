@@ -11,19 +11,24 @@ body {
     overflow-x: hidden;
 }
 
-/* ২. গ্লাস কার্ড - রেসপন্সিভ ও গ্লো ইফেক্ট */
+/* ২. গ্লাস কার্ড - রেসপন্সিভ ও নিয়ন গ্লো অ্যানিমেশন */
 .glass-card { 
-    background: rgba(255, 255, 255, 0.05); 
+    background: rgba(0, 0, 0, 0.7); 
     backdrop-filter: blur(20px); 
     padding: 40px; 
     border-radius: 30px; 
     text-align: center; 
     width: 350px; 
     max-width: 90%; 
-    border: 1px solid rgba(0, 255, 136, 0.3); 
+    border: 2px solid transparent;
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
     box-sizing: border-box;
-    transition: 0.5s;
+    animation: borderGlow 3s infinite alternate;
+}
+
+@keyframes borderGlow {
+    0% { border-color: #00ff88; box-shadow: 0 0 10px #00ff88; }
+    100% { border-color: #0088ff; box-shadow: 0 0 20px #0088ff; }
 }
 
 /* ৩. কার্টুন ইমেজ */
@@ -34,7 +39,7 @@ body {
     transition: 0.3s; 
     border-radius: 50%; 
     object-fit: cover;
-    border: 2px solid #00ff88;
+    border: 3px solid #00ff88;
 }
 
 /* ৪. ইনপুট ফিল্ড এবং কন্টেইনার */
@@ -42,13 +47,14 @@ body {
 
 input { 
     width: 100%; 
-    padding: 12px; 
-    background: rgba(0,0,0,0.3); 
+    padding: 14px; 
+    background: rgba(255,255,255,0.05); 
     border: 1px solid #444; 
     color: white; 
-    border-radius: 10px; 
+    border-radius: 12px; 
     outline: none; 
     box-sizing: border-box; 
+    font-size: 16px;
 }
 
 input:focus { border: 1px solid #00ff88; box-shadow: 0 0 8px rgba(0, 255, 136, 0.3); }
@@ -63,21 +69,22 @@ input:focus { border: 1px solid #00ff88; box-shadow: 0 0 8px rgba(0, 255, 136, 0
     border: none; 
     color: #00ff88; 
     cursor: pointer; 
-    font-size: 16px;
+    font-size: 20px;
 }
 
-/* ৬. মেইন বাটন ডিজাইন (Login/Register) */
+/* ৬. মেইন বাটন ডিজাইন */
 button#action-btn { 
     width: 100%; 
     padding: 15px; 
     background: #00ff88; 
     border: none; 
-    border-radius: 10px; 
+    border-radius: 12px; 
     font-weight: bold; 
     cursor: pointer; 
     color: #000;
     transition: 0.3s;
     margin-top: 10px;
+    font-size: 16px;
 }
 
 button#action-btn:hover { background: #00cc6a; box-shadow: 0 0 15px #00ff88; }
