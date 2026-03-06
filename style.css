@@ -1,0 +1,71 @@
+/* পুরো পেজের ডিজাইন */
+body { 
+    margin: 0; 
+    background: #000; 
+    color: #fff; 
+    font-family: 'Segoe UI', sans-serif; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    overflow: hidden; 
+}
+
+/* গ্লাস-মোরফিজম কার্ড */
+.glass-card { 
+    background: rgba(255, 255, 255, 0.05); 
+    backdrop-filter: blur(20px); 
+    padding: 40px; 
+    border-radius: 30px; 
+    text-align: center; 
+    width: 350px; 
+    border: 1px solid rgba(0, 255, 136, 0.3); 
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); 
+}
+
+/* কার্টুন ইমেজ */
+#mascot-img { 
+    width: 180px; 
+    height: 180px; 
+    margin-bottom: 20px; 
+    transition: 0.3s; 
+    border-radius: 50%;
+}
+
+/* ইনপুট ফিল্ড ডিজাইন */
+input { 
+    width: 100%; 
+    padding: 12px; 
+    margin: 10px 0; 
+    background: rgba(0,0,0,0.3); 
+    border: 1px solid #444; 
+    color: white; 
+    border-radius: 10px; 
+    outline: none; 
+    box-sizing: border-box; /* এটি ইনপুটকে ভেঙে যাওয়া থেকে বাঁচাবে */
+}
+
+/* ফোকাস করলে সবুজ গ্লো */
+input:focus {
+    border: 1px solid #00ff88;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* বাটন ডিজাইন */
+button { 
+    width: 100%; 
+    padding: 15px; 
+    margin-top: 10px; 
+    background: #00ff88; 
+    border: none; 
+    border-radius: 10px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    color: #000;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #00cc6a;
+    box-shadow: 0 0 15px #00ff88;
+}
