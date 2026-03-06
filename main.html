@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabbir Hosen Akash | Dashboard</title>
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        
+        header { width: 100%; padding: 20px; text-align: center; border-bottom: 1px solid #333; background: #0d0d0d; }
+        
+        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 40px; }
+        
+        .card { 
+            background: #111; padding: 30px; border-radius: 20px; 
+            border: 1px solid #00ff88; width: 300px; text-align: center; 
+            transition: 0.3s;
+        }
+        
+        .card:hover { transform: translateY(-10px); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
+        
+        .btn-logout { 
+            background: #ff4444; color: #fff; border: none; 
+            padding: 10px 25px; border-radius: 8px; cursor: pointer; 
+            font-weight: bold; margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome, Sabbir Hosen Akash</h1>
+    <p>আপনার পোর্টফোলিও এবং প্রজেক্ট ম্যানেজমেন্ট ড্যাশবোর্ড</p>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h3>My Projects</h3>
+        <p>বর্তমান লাইভ প্রজেক্টসমূহ এবং গিটহাব রেপোজিটরি দেখুন।</p>
+    </div>
+    <div class="card">
+        <h3>Analytics</h3>
+        <p>আপনার ওয়েবসাইটের ট্রাফিক এবং ভিউ চেক করুন।</p>
+    </div>
+    <div class="card">
+        <h3>Settings</h3>
+        <p>প্রোফাইল ইনফরমেশন এবং সেটিংস পরিবর্তন করুন।</p>
+    </div>
+</div>
+
+<button class="btn-logout" onclick="logout()">Logout</button>
+
+<script>
+    function logout() {
+        // লগআউট করার সময় লোকাল স্টোরেজ ক্লিয়ার করতে চাইলে করবেন, না চাইলে শুধু রিডাইরেক্ট করুন
+        window.location.href = "index.html";
+    }
+</script>
+
+</body>
+</html>
