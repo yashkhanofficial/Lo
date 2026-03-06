@@ -70,3 +70,10 @@ function sendData() {
         console.error('Error:', error);
     });
 }
+
+// Create Account বাটনের জন্য
+document.querySelector('a').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert("Account creation is currently under maintenance. Please contact admin.");
+    // ভবিষ্যতে এখানে window.location.href = 'signup.html'; যোগ করবেন
+});
